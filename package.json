@@ -2,5 +2,9 @@
   "name": "Zelda-Client",
   "version": "1.0.0",
   "description": "Zelda Client GUI",
-  "main": "main.js"
+  "main": "main.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shpoellet/SlowMotionBooth.git"
+  }
 }
