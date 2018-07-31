@@ -1,10 +1,20 @@
 {
-  "name": "Zelda-Client",
+  "name": "SlowMotionBooth",
   "version": "1.0.0",
-  "description": "Zelda Client GUI",
+  "description": "Slow Motion Booth control software",
+  "license": "MIT",
   "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/shpoellet/SlowMotionBooth.git"
+  },
+  "dependencies": {
+    "Sony-Camera-Remote": "https://github.com/shpoellet/Sony-Camera-Remote.git"
+  },
+  "devDependencies": {
+    "electron": "^2.0.5"
   }
 }
