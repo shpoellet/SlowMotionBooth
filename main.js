@@ -8,7 +8,7 @@ process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
 
   function createWindow () {
     // Create the browser window.
-    win = new BrowserWindow({width: 800, height: 480, useContentSize: true})
+    win = new BrowserWindow({width: 800, height: 480, useContentSize: true, show:false})
 
     // and load the index.html of the app.
     win.loadFile('app/index.html')
@@ -23,6 +23,11 @@ process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
       // in an array if your app supports multi windows, this is the time
       // when you should delete the corresponding element.
       win = null
+    })
+
+    win.once('ready-to-show', function (){
+  	  win.show();
+  	  runMain();
     })
   }
 
@@ -50,3 +55,9 @@ process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
 
   // In this file you can include the rest of your app's specific main process
   // code. You can also put them in separate files and require them here.
+  function runMain(){
+  	console.log("start");
+  	var SlowMotionBooth = require('./app/js/slow-motion-booth.js');
+  	SlowMotionBooth.init(win);
+  	// zelda.start();
+  }

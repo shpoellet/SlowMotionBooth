@@ -2,12 +2,61 @@
   <html>
     <head>
       <meta charset="UTF-8">
-      <!-- <title>Hello World!</title> -->
+      <link rel="stylesheet" type="text/css" href="css/index.css">
+    	<title>Slow Motion Booth</title>
     </head>
     <body>
-      <h1>Hello World!</h1>
-      We are using node <script>document.write(process.versions.node)</script>,
-      Chrome <script>document.write(process.versions.chrome)</script>,
-      and Electron <script>document.write(process.versions.electron)</script>.
+      <div id="title_box">
+  			Slow Motion Booth
+  		</div>
+      <div class="status_box" id="camera_status">
+        <div class="status_display" id="camera_status_display"></div>
+  			Camera
+        <div class="settings_graphic"></div>
+  		</div>
+      <div class="status_box" id="pivot_status">
+        <div class="status_display" id="pivot_status_display"></div>
+  			Pivot Arm
+        <div class="settings_graphic"></div>
+  		</div>
+      <div class="status_box" id="lights_status">
+        <div class="status_display" id="lights_status_display"></div>
+  			Lights
+        <div class="settings_graphic"></div>
+  		</div>
+      <div class="status_box" id="server_status">
+        <div class="status_display" id="server_status_display"></div>
+  			Server
+        <div class="settings_graphic"></div>
+  		</div>
+
+
+
+      <div id="main_pane">
+        <div id="recordingLight"></div>
+        <div id="live_view_window"></div>
+
+        <div class="action_button" id="arm_button">ARM</div>
+        <div class="action_button" id="fire_button">FIRE</div>
+        <div class="sub_action_button" id="cancel_fire_button">CANCEL</div>
+
+        <div id="photo_number_box">
+          Video Number
+          <div id="photo_number_display">12345</div>
+        </div>
+        <div id="force_arm_pane">
+          The camera is in file transfer mode. Arming the sytem may interupt a file transfer.
+          <br><br>
+          Do you wish to continue?
+          <div class="force_arm_option" id="force_arm_yes">YES</div>
+          <div class="force_arm_option" id="force_arm_no">NO</div>
+        </div>
+        <div id="no_camera_pane">Camera Not Found</div>
+      </div>
     </body>
+
+    <script>
+      // You can also require other files to run in this process
+      require('./js/index.js')
+    </script>
   </html>
