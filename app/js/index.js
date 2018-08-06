@@ -70,3 +70,12 @@ document.getElementById("force_arm_yes").onmousedown = function(){
 document.getElementById("force_arm_no").onmousedown = function(){
   ipcRenderer.send('forceArm', false);
 }
+
+ipcRenderer.on('pivotArmConnection', function(event, value){
+  if (value){
+    document.getElementById("pivot_status_display").style.backgroundColor = 'green';
+  }
+  else {
+    document.getElementById("pivot_status_display").style.backgroundColor = 'red';
+  }
+})
