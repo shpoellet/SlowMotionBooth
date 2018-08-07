@@ -59,5 +59,4 @@ process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
   	console.log("start");
   	var SlowMotionBooth = require('./app/js/slow-motion-booth.js');
   	SlowMotionBooth.init(win);
-  	// zelda.start();
   }

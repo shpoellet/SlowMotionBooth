@@ -31,8 +31,8 @@
   		</div>
 
 
-
-      <div id="main_pane">
+      <!-- home page -->
+      <div class="main_pane" id="home_pane">
         <div id="recordingLight"></div>
         <div id="live_view_window"></div>
 
@@ -44,15 +44,47 @@
           Video Number
           <div id="photo_number_display">12345</div>
         </div>
-        <div id="force_arm_pane">
+        <div class="error_pane" id="force_arm_pane">
           The camera is in file transfer mode. Arming the sytem may interupt a file transfer.
           <br><br>
           Do you wish to continue?
-          <div class="force_arm_option" id="force_arm_yes">YES</div>
-          <div class="force_arm_option" id="force_arm_no">NO</div>
+          <div class="alert_option" id="force_arm_yes">YES</div>
+          <div class="alert_option" id="force_arm_no">NO</div>
         </div>
-        <div id="no_camera_pane">Camera Not Found</div>
+        <div class="error_pane" id="no_camera_pane">Camera Not Found</div>
+        <div class="error_pane" id="alert_pane">
+          <div id="alert_message">
+            Alert Message
+          </div>
+          <div class="alert_option" id="alert_button">OK</div>
+        </div>
       </div>
+
+      <!-- Pivot Arm Settins Page -->
+      <div class="main_pane settings_pane" id="pivot_pane">
+        <div class="settings_title">Pivot Arm Settings</div>
+        <div class="settings_close_button" id="pivot_close_button">Close</div>
+        <div class="settings_content">
+          IP Address<br>
+          <input type="number" class="IP_input" id="IP_pivot_0">&nbsp.
+          <input type="number" class="IP_input" id="IP_pivot_1">&nbsp.
+          <input type="number" class="IP_input" id="IP_pivot_2">&nbsp.
+          <input type="number" class="IP_input" id="IP_pivot_3">&nbsp
+          <button type="button" class="settings_button" id="pivot_IP_button">Save</button>
+          <br><br><br>
+          Move Arm<br>
+          <button type="button" class="settings_button" id="pivot_left_button">Left</button>
+          <button type="button" class="settings_button" id="pivot_toggle_button">Toggle</button>
+          <button type="button" class="settings_button" id="pivot_right_button">Right</button>
+          <br><br><br>
+          Pivot Bypass
+          <input type="checkbox" id="pivot_overide_check">
+        </div>
+
+
+      </div>
+
+
     </body>
 
     <script>

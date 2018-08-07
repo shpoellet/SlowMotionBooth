@@ -19,7 +19,7 @@ var bypassState = false; //is set as an overide so the system can be operated wi
 var lastSendTime = 0;
 var lastReceiveTime = 0;
 var packetInterval = 250;
-var timeoutInterval = 500;
+var timeoutInterval = 1000;
 var minSendInterval = 100;
 
 //packet count
@@ -117,6 +117,7 @@ exports.init = function (item){
 	server.bind();
 
   Window.webContents.send('pivotArmConnection', connectedState);
+	Window.webContents.send('updatePivotIP', serverIP);
 
 	setInterval(loop, 100);
 
@@ -137,13 +138,20 @@ exports.isReady = function(){
 //sets the bypass
 exports.setBypass = function(value){
   bypassState = value;
+	Window.webContents.send('updatePivotBypass', bypassState);
 }
 
-//Set the ip Address of the wagon
+//Set the ip Address of the pivot
 exports.setIP = function (item) {
 	serverIP = item;
 	IPstring = serverIP[0]+"."+serverIP[1]+"."+serverIP[2]+"."+serverIP[3]
 	IPset = true;
+	Window.webContents.send('updatePivotIP', serverIP);
+}
+
+//returns the ip Address of the pivot
+exports.getIP = function () {
+	return serverIP;
 }
 
 //move the camera arm
