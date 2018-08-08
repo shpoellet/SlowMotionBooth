@@ -12,7 +12,8 @@
     "url": "https://github.com/shpoellet/SlowMotionBooth.git"
   },
   "dependencies": {
-    "Sony-Camera-Remote": "git+https://github.com/shpoellet/Sony-Camera-Remote.git"
+    "Sony-Camera-Remote": "git+https://github.com/shpoellet/Sony-Camera-Remote.git",
+    "request": "^2.87.0"
   },
   "devDependencies": {
     "electron": "^2.0.6"

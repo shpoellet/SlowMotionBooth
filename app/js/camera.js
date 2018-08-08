@@ -12,6 +12,8 @@ var recordPrep = false;
 var downloadOnComplete = false;
 var armBlock = false;
 
+var photoNumber = 0;
+
 //private functions
 function arm(force){
   states = cam.getStates();
@@ -54,17 +56,14 @@ exports.deArm = function(){
   armed = false;
 }
 
-exports.startRec = function(time, download){
+exports.startRec = function(time, download, num){
+  photoNumber = num;
   downloadOnComplete = download;
   cam.recordStart();
   setTimeout(function(){cam.recordStop()}, time);
   armed = false;
   Window.webContents.send('armed', false);
 }
-
-
-
-
 
 
 //evnet handlers
@@ -113,12 +112,15 @@ cam.events.on('movieRecStopped', function(){
   if(downloadOnComplete){
     armBlock = true;  //block the system from arming while in this delay
     setTimeout(function(){
-      cam.startDownloadMacro();
+      cam.startDownloadMacro(photoNumber);
       armBlock = false;
     }, 1000);
   }
   Window.webContents.send('recording', false);
 })
 
+cam.events.on('downloadComplete', function(filePath){
+  ExportsEmitter.emit('fileDownloaded', filePath);
+})
 
 // setTimeout(function(){cam.setTransferFunction()}, 1000);

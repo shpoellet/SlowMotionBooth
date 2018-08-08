@@ -2,8 +2,9 @@ var Window;
 const {ipcMain} = require('electron');
 var Camera = require('./camera.js');
 var PivotArm = require('./pivot-arm.js');
+var Server = require('./server.js');
 
-
+var photoNumber = 0;
 
 
 //private functions
@@ -28,8 +29,10 @@ function deArm(){
 }
 
 function fire(){
-  Camera.startRec(5000, true);
+  Camera.startRec(5000, true, photoNumber);
   setTimeout(function(){PivotArm.moveArm()}, 1000);
+  // Server.sendFile('download.mp4');
+  photoNumber++;
 }
 
 
@@ -39,6 +42,7 @@ exports.init = function(item){
   Camera.init(Window);
   PivotArm.init(Window);
   PivotArm.setIP([10, 0, 0, 81]);
+
 }
 
 
@@ -48,6 +52,10 @@ exports.init = function(item){
 //events handlers
 Camera.events.on('armed', function(){
   Window.webContents.send('armed', true);
+})
+
+Camera.events.on('fileDownloaded', function(path){
+  Server.sendFile(path);
 })
 
 //------------------------------------------------------------------------
