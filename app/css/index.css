@@ -300,3 +300,14 @@ body{
 	width: 25px;
 	height: 25px;
 }
+
+/* Pivot Pane */
+#server_pane{
+	display: none;
+	background-color: #202020;
+}
+
+#server_overide_check{
+	width: 25px;
+	height: 25px;
+}

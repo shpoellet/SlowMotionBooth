@@ -61,6 +61,10 @@ ipcRenderer.on('recording', function(event, value){
   }
 })
 
+ipcRenderer.on('photoNumber', function(event, value){
+  document.getElementById("photo_number_display").innerHTML = value;
+})
+
 
 //Alert Page
 ipcRenderer.on('alert', function(event, value){
@@ -69,9 +73,18 @@ ipcRenderer.on('alert', function(event, value){
 })
 
 //Pivot Page
-ipcRenderer.on('pivotSetings', function(event, value){
-  document.getElementById('pivot_pane').style.display = 'block';
+ipcRenderer.on('pivotArmConnection', function(event, value){
+  if (value){
+    document.getElementById("pivot_status_display").style.backgroundColor = 'green';
+  }
+  else {
+    document.getElementById("pivot_status_display").style.backgroundColor = 'red';
+  }
 })
+
+// ipcRenderer.on('pivotSetings', function(event, value){
+//   document.getElementById('pivot_pane').style.display = 'block';
+// })
 
 ipcRenderer.on('updatePivotIP', function(event, value){
   document.getElementById('IP_pivot_0').value = value[0];
@@ -82,6 +95,27 @@ ipcRenderer.on('updatePivotIP', function(event, value){
 
 ipcRenderer.on('updatePivotBypass', function(event, value){
   document.getElementById('pivot_overide_check').checked = value;
+})
+
+//server Page
+ipcRenderer.on('serverState', function(event, value){
+  if (value){
+    document.getElementById("server_status_display").style.backgroundColor = 'green';
+  }
+  else {
+    document.getElementById("server_status_display").style.backgroundColor = 'red';
+  }
+})
+
+ipcRenderer.on('updateServerIP', function(event, value){
+  document.getElementById('IP_server_0').value = value[0];
+  document.getElementById('IP_server_1').value = value[1];
+  document.getElementById('IP_server_2').value = value[2];
+  document.getElementById('IP_server_3').value = value[3];
+})
+
+ipcRenderer.on('updateServerBypass', function(event, value){
+  document.getElementById('server_overide_check').checked = value;
 })
 
 //------------------------------------------------------------------------
@@ -106,14 +140,7 @@ document.getElementById("force_arm_no").onmousedown = function(){
   ipcRenderer.send('forceArm', false);
 }
 
-ipcRenderer.on('pivotArmConnection', function(event, value){
-  if (value){
-    document.getElementById("pivot_status_display").style.backgroundColor = 'green';
-  }
-  else {
-    document.getElementById("pivot_status_display").style.backgroundColor = 'red';
-  }
-})
+
 
 // Alert Page
 document.getElementById("alert_button").onmousedown = function(){
@@ -171,7 +198,36 @@ document.getElementById("pivot_overide_check").onclick = function(){
 
 // Pivot Settings Page
 document.getElementById("server_status").onclick = function(){
-  ipcRenderer.send('pivotSettingsOpen');
+  ipcRenderer.send('serverSettingsOpen');
   closeSettingsPanes();
-  // document.getElementById('pivot_pane').style.display = 'block';
+  document.getElementById('server_pane').style.display = 'block';
+}
+
+document.getElementById("server_close_button").onclick = function(){
+  document.getElementById('server_pane').style.display = 'none';
+}
+
+document.getElementById("server_IP_button").onclick = function(){
+  var i;
+  var input;
+  var validInput = true;
+  var ip = [0, 0, 0, 0];
+  for(i=0; i<4; i++){
+    input = parseInt(document.getElementById('IP_server_'+i).value);
+    if(input>=0 & input<256){
+      ip[i] = input;
+    }
+    else{
+      document.getElementById('IP_server_'+i).value = '';
+      validInput = false;
+    }
+  }
+
+  if(validInput){
+    ipcRenderer.send('setServerIP', ip);
+  }
+}
+
+document.getElementById("server_overide_check").onclick = function(){
+  ipcRenderer.send('setServerBypass', document.getElementById('server_overide_check').checked);
 }
