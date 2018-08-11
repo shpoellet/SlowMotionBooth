@@ -118,6 +118,15 @@ ipcRenderer.on('updateServerBypass', function(event, value){
   document.getElementById('server_overide_check').checked = value;
 })
 
+//camera_page
+ipcRenderer.on('updateRecordTime', function(event, value){
+  document.getElementById('record_time').value = value;
+})
+
+ipcRenderer.on('updatePivotDelay', function(event, value){
+  document.getElementById('pivot_time').value = value;
+})
+
 //------------------------------------------------------------------------
 //Mouse Clicks
 document.getElementById("arm_button").onmousedown = function(){
@@ -230,4 +239,39 @@ document.getElementById("server_IP_button").onclick = function(){
 
 document.getElementById("server_overide_check").onclick = function(){
   ipcRenderer.send('setServerBypass', document.getElementById('server_overide_check').checked);
+}
+
+
+
+// Camera Settings Page
+document.getElementById("camera_status").onclick = function(){
+  ipcRenderer.send('cameraSettingsOpen');
+  closeSettingsPanes();
+  document.getElementById('camera_pane').style.display = 'block';
+}
+
+document.getElementById("camera_close_button").onclick = function(){
+  document.getElementById('camera_pane').style.display = 'none';
+}
+
+document.getElementById("record_time_button").onclick = function(){
+  var input = parseInt(document.getElementById('record_time').value);
+
+  if(input >= 1000 & input <= 10000){
+    ipcRenderer.send('setRecordTime', input);
+  }
+  else {
+    document.getElementById('record_time').value = '';
+  }
+}
+
+document.getElementById("pivot_time_button").onclick = function(){
+  var input = parseInt(document.getElementById('pivot_time').value);
+
+  if(input >= 1000 & input <= 10000){
+    ipcRenderer.send('setPivotDelay', input);
+  }
+  else {
+    document.getElementById('pivot_time').value = '';
+  }
 }

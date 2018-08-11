@@ -5,6 +5,8 @@ var PivotArm = require('./pivot-arm.js');
 var Server = require('./server.js');
 
 var photoNumber = 0;
+var recordTime = 3000;
+var pivotDelay = 1000;
 
 
 //private functions
@@ -43,8 +45,8 @@ function deArm(){
 }
 
 function fire(){
-  Camera.startRec(5000, true, photoNumber);
-  setTimeout(function(){PivotArm.moveArm()}, 1000);
+  Camera.startRec(recordTime, true, photoNumber);
+  setTimeout(function(){PivotArm.moveArm()}, pivotDelay);
   // Server.sendFile('download.mp4');
 
 }
@@ -126,4 +128,18 @@ ipcMain.on('setServerIP', function(event, value){
 
 ipcMain.on('setServerBypass', function(event, value){
   Server.setBypass(value);
+})
+
+//camera settings events
+ipcMain.on('cameraSettingsOpen', function(event){
+  Window.webContents.send('updateRecordTime', recordTime);
+  Window.webContents.send('updatePivotDelay', pivotDelay);
+})
+
+ipcMain.on('setRecordTime', function(event, value){
+  recordTime = value;
+})
+
+ipcMain.on('setPivotDelay', function(event, value){
+  pivotDelay = value;
 })

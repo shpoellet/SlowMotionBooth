@@ -26,12 +26,10 @@ exports.sendFile = function(filename){
   var target = targetPath + filename;
 
   function trySend(){
-
-    console.log('try')
     var readStream = fs.createReadStream(filename);
 
     readStream.on('error', function(err){
-      console.log("Could not open file: " + filename);
+      console.log("Server: Could not open file: " + filename);
     })
 
     readStream.on('open', function(){
@@ -46,37 +44,37 @@ exports.sendFile = function(filename){
       };
 
       var req = http.request(httpOptions, function(err){
-        console.log('Upload Complete: ' + filename);
+        console.log('Server: Upload Complete: ' + filename);
         req.end();
         fs.unlink(filename, function (err) {
-          if (err) console.log('Could not delete file: '+err);
-          else console.log('File deleted!');
+          if (err) console.log('Server: Could not delete file: '+err);
+          else console.log('Server: File deleted!');
         })
       });
 
       req.on('error', function(err){
-        console.error('cannot send file to ' + IPstring + ': ' + err);
+        console.error('Server: Can not send file to ' + IPstring + ': ' + err);
 
         readStream.close();
         req.end();
 
         if(retry){
           //move file
-          console.log('transfer failed for second time, moving file to archive')
+          console.log('Server: transfer failed for second time, moving file to archive')
           fs.rename(filename, 'notTransfered/'+filename, function(err){
             if (err && err.code=='ENOENT'){
-                console.log("directory does not exist")
+                console.log("Server: ARchive directory does not exist")
                 fs.mkdir(notTransferedPath, function(err){
                   if (err){
-                    console.log('Could not make archive directory: ' + err);
+                    console.log('Server: Could not make archive directory: ' + err);
                   }
                   else {
                     fs.rename(filename, 'notTransfered/'+filename, function(err){
                       if(err){
-                        console.log('Could not move file: ' + err);
+                        console.log('Server: Could not move file to archive: ' + err);
                       }
                       else{
-                        console.log('File moved to archive');
+                        console.log('Server: File moved to archive');
                       }
                     });
                   }
@@ -98,7 +96,7 @@ exports.sendFile = function(filename){
       })
 
       req.on('timeout', ()=>req.abort());
-      console.log('upload started')
+      console.log('Server: Upload started')
       readStream.pipe(req);
 
     })
@@ -113,24 +111,28 @@ function checkConnection(){
       method: 'POST',
       hostname: IPstring,
       port: serverPort,
-      path: '/connect'
+      path: '/connect',
+      timeout: 750,
     };
     var req = http.request(httpOptions, function(res){
       //got a reply so the server is connected
       if(!connectedState){
         connectedState = true;
         Window.webContents.send('serverState', connectedState);
+        console.log("Server: Connected")
       };
     });
 
     req.on('error', function(err){
-      console.log('Unable to connect to Server:' + err);
+      console.log('Server: Unable to connect:' + err);
       req.end();
       if(connectedState){
         connectedState = false;
         Window.webContents.send('serverState', connectedState);
+        console.log("Server: Disconnected")
       };
     });
+    req.on('timeout', ()=>req.abort());
 
     req.write('connect');
     req.end();

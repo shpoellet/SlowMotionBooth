@@ -1,4 +1,4 @@
-const {app, BrowserWindow} = require('electron')
+const {app, BrowserWindow, Menu} = require('electron')
 
 
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
@@ -8,7 +8,13 @@ process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
 
   function createWindow () {
     // Create the browser window.
-    win = new BrowserWindow({width: 800, height: 480, useContentSize: true, show:false})
+    win = new BrowserWindow({
+      width: 800,
+      height: 480,
+      useContentSize: true,
+      resizable: false,
+      // fullscreen: true,
+      show:false})
 
     // and load the index.html of the app.
     win.loadFile('app/index.html')
@@ -29,7 +35,10 @@ process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
   	  win.show();
   	  runMain();
     })
+
+    Menu.setApplicationMenu(null);
   }
+
 
   // This method will be called when Electron has finished
   // initialization and is ready to create browser windows.

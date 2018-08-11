@@ -73,7 +73,7 @@ function connectionTransition(state){
 		//the states are different so execute the transition
 		connectedState = state;
 
-		console.log("arm connected: " + connectedState);
+		console.log("Pivot: Connected = " + connectedState);
 		Window.webContents.send('pivotArmConnection', connectedState);
 	}
 }
@@ -89,7 +89,6 @@ function loop(){
 		if ((Date.now() - lastReceiveTime)>=timeoutInterval){
 			//there has been a timeout
 			connectionTransition(false);
-			console.log("arm connection timeout")
 		}
 		else {
 			//the arm is still connected so check if a packet needs to be sent
@@ -120,8 +119,6 @@ exports.init = function (item){
 	Window.webContents.send('updatePivotIP', serverIP);
 
 	setInterval(loop, 100);
-
-	console.log("arm network started");
 
 }
 

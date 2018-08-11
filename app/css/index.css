@@ -290,6 +290,17 @@ body{
 	cursor: pointer;
 }
 
+/* Camera Pane */
+#camera_pane{
+	display: none;
+	background-color: #202020;
+}
+
+.time_input{
+	width: 75px;
+	font-size: 20px;
+}
+
 /* Pivot Pane */
 #pivot_pane{
 	display: none;
@@ -301,7 +312,7 @@ body{
 	height: 25px;
 }
 
-/* Pivot Pane */
+/* Server Pane */
 #server_pane{
 	display: none;
 	background-color: #202020;
