@@ -65,6 +65,14 @@ ipcRenderer.on('photoNumber', function(event, value){
   document.getElementById("photo_number_display").innerHTML = value;
 })
 
+ipcRenderer.on('liveviewJpeg', function(event, imageBuffer){
+  document.getElementById("live_view_window").setAttribute('src', 'data:image/png;base64,' + imageBuffer.toString('base64'));
+})
+
+ipcRenderer.on('resetLiveview', function(event){
+  document.getElementById("live_view_window").setAttribute('src', 'graphics/liveview.png');
+})
+
 
 //Alert Page
 ipcRenderer.on('alert', function(event, value){

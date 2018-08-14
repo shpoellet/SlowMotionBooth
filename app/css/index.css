@@ -169,7 +169,8 @@ body{
   height: 250px;
   left: 40px;
   top: 75px;
-  background-color: white;
+  background-color: black;
+	overflow: hidden;
 }
 
 .action_button{

@@ -3,6 +3,7 @@ const {ipcMain} = require('electron');
 var Camera = require('./camera.js');
 var PivotArm = require('./pivot-arm.js');
 var Server = require('./server.js');
+var SaveFile = require('./save-file.js');
 
 var photoNumber = 0;
 var recordTime = 3000;
@@ -13,6 +14,7 @@ var pivotDelay = 1000;
 function increasePhotoNumber(){
   photoNumber++;
   Window.webContents.send('photoNumber', photoNumber);
+  saveData()
 }
 
 function setPhotoNumber(value){
@@ -51,6 +53,25 @@ function fire(){
 
 }
 
+function applySavedData(saveData){
+  console.log('Applying settings from file')
+  recordTime = saveData[0];
+  pivotDelay = saveData[1];
+  PivotArm.setIP(saveData[2]);
+  Server.setIP(saveData[3]);
+  setPhotoNumber(saveData[4]);
+}
+
+function saveData(){
+  var data = [];
+  data[0] = recordTime;
+  data[1] = pivotDelay;
+  data[2] = PivotArm.getIP();
+  data[3] = Server.getIP();
+  data[4] = photoNumber;
+  SaveFile.saveToFile(data);
+}
+
 
 //public functions
 exports.init = function(item){
@@ -58,9 +79,12 @@ exports.init = function(item){
   Camera.init(Window);
   PivotArm.init(Window);
   Server.init(Window);
-  PivotArm.setIP([10, 0, 0, 81]);
-  Server.setIP([127,0,0,1]);
-  setPhotoNumber(100);
+  // PivotArm.setIP([10, 0, 0, 81]);
+  // Server.setIP([127,0,0,1]);
+  setPhotoNumber(0);
+
+  SaveFile.loadFromFile(applySavedData);
+
   // Server.sendFile('downFile.mp4');
 }
 
@@ -107,6 +131,7 @@ ipcMain.on('pivotSettingsOpen', function(event){
 
 ipcMain.on('setPivotIP', function(event, value){
   PivotArm.setIP(value);
+  saveData()
 })
 
 ipcMain.on('movePivot', function(event, value){
@@ -124,6 +149,7 @@ ipcMain.on('serverSettingsOpen', function(event){
 
 ipcMain.on('setServerIP', function(event, value){
   Server.setIP(value);
+  saveData()
 })
 
 ipcMain.on('setServerBypass', function(event, value){
@@ -138,8 +164,10 @@ ipcMain.on('cameraSettingsOpen', function(event){
 
 ipcMain.on('setRecordTime', function(event, value){
   recordTime = value;
+  saveData()
 })
 
 ipcMain.on('setPivotDelay', function(event, value){
   pivotDelay = value;
+  saveData()
 })

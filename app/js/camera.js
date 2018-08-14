@@ -23,6 +23,7 @@ function arm(force){
       armed = true;
       recordPrep = false;
       ExportsEmitter.emit('armed');
+      cam.startLiveview();
       return 'armed';
     }
     else if(states.camFunction == 'Remote Shooting'){
@@ -54,6 +55,9 @@ exports.arm = arm;
 
 exports.deArm = function(){
   armed = false;
+  cam.stopLiveview(function(err){
+    setTimeout(function(){Window.webContents.send('resetLiveview')}, 500);
+  });
 }
 
 exports.startRec = function(time, download, num){
@@ -112,6 +116,9 @@ cam.events.on('movieRecStopped', function(){
   if(downloadOnComplete){
     armBlock = true;  //block the system from arming while in this delay
     setTimeout(function(){
+      cam.stopLiveview(function(err){
+        setTimeout(function(){Window.webContents.send('resetLiveview')}, 500);
+      });
       cam.startDownloadMacro(photoNumber);
       armBlock = false;
     }, 1000);
@@ -121,6 +128,10 @@ cam.events.on('movieRecStopped', function(){
 
 cam.events.on('downloadComplete', function(filePath){
   ExportsEmitter.emit('fileDownloaded', filePath);
+})
+
+cam.events.on('liveviewJpeg', function(imageBuffer){
+  Window.webContents.send('liveviewJpeg', imageBuffer);
 })
 
 // setTimeout(function(){cam.setTransferFunction()}, 1000);
