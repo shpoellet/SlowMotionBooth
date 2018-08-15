@@ -1,4 +1,5 @@
-var cam = require('../../../Sony-Camera-Remote/index.js');
+// var cam = require('../../../Sony-Camera-Remote/index.js');
+var cam = require('Sony-Camera-Remote')
 
 var Window;
 
@@ -116,9 +117,9 @@ cam.events.on('movieRecStopped', function(){
   if(downloadOnComplete){
     armBlock = true;  //block the system from arming while in this delay
     setTimeout(function(){
-      cam.stopLiveview(function(err){
-        setTimeout(function(){Window.webContents.send('resetLiveview')}, 500);
-      });
+      // cam.stopLiveview(function(err){
+      //   setTimeout(function(){Window.webContents.send('resetLiveview')}, 500);
+      // });
       cam.startDownloadMacro(photoNumber);
       armBlock = false;
     }, 1000);
@@ -132,6 +133,10 @@ cam.events.on('downloadComplete', function(filePath){
 
 cam.events.on('liveviewJpeg', function(imageBuffer){
   Window.webContents.send('liveviewJpeg', imageBuffer);
+})
+
+cam.events.on('liveviewEnd', function(){
+  Window.webContents.send('resetLiveview');
 })
 
 // setTimeout(function(){cam.setTransferFunction()}, 1000);

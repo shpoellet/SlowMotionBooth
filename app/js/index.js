@@ -276,7 +276,7 @@ document.getElementById("record_time_button").onclick = function(){
 document.getElementById("pivot_time_button").onclick = function(){
   var input = parseInt(document.getElementById('pivot_time').value);
 
-  if(input >= 1000 & input <= 10000){
+  if(input >= 0 & input <= 10000){
     ipcRenderer.send('setPivotDelay', input);
   }
   else {

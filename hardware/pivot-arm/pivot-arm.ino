@@ -35,7 +35,7 @@ unsigned long packetTime;
 #define PIVOT_LEFT false
 #define PIVOT_RIGHT true
 bool pivotPosition = PIVOT_LEFT; //false = left
-int pivotPin = 8;
+int pivotPin = 9;
 
 //helper functions
 void setPivot(bool value){
@@ -86,6 +86,8 @@ void connectReply(){
 
     
 void setup() {
+
+  delay(500);
   //set packet time
   packetTime = millis();
   
@@ -98,6 +100,7 @@ void setup() {
   digitalWrite(pivotPin, pivotPosition);
   
   Serial.begin(9600);
+  Serial.println("start");
 
 }
 
